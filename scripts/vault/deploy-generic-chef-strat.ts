@@ -14,7 +14,7 @@ const {
 } = addressBook.polygon.tokens;
 const { apeswap, beefyfinance } = addressBook.polygon.platforms;
 
-const shouldVerifyOnEtherscan = false;
+const shouldVerifyOnEtherscan = true;
 
 const want = web3.utils.toChecksumAddress("0xb8e54c9ea1616beebe11505a419dd8df1000e02a");
 
@@ -70,7 +70,6 @@ async function main() {
     vaultParams.mooName,
     vaultParams.mooSymbol,
     vaultParams.delay,
-    {gasPrice: 800000000 * 10}
   ];
   const vault = await Vault.deploy(...vaultConstructorArguments);
   await vault.deployed();
@@ -87,9 +86,7 @@ async function main() {
     strategyParams.outputToNativeRoute,
     strategyParams.rewardToOutputRoute,
     strategyParams.outputToLp0Route,
-    strategyParams.outputToLp1Route,
-    {gasPrice: 800000000 * 10,
-    gasLimit: 10000000}
+    strategyParams.outputToLp1Route
   ];
   const strategy = await Strategy.deploy(...strategyConstructorArguments);
   await strategy.deployed();
@@ -103,12 +100,12 @@ async function main() {
 
   console.log();
   console.log("Running post deployment");
-
+  
   if (shouldVerifyOnEtherscan) {
     verifyContracts(vault, vaultConstructorArguments, strategy, strategyConstructorArguments);
   }
   await setPendingRewardsFunctionName(strategy, strategyParams.pendingRewardsFunctionName);
-  await setCorrectCallFee(strategy, hardhat.network.name);
+  //await setCorrectCallFee(strategy, hardhat.network.name);
   console.log();
 
   // if (hardhat.network.name === "bsc") {
