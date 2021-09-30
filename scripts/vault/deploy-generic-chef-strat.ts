@@ -70,7 +70,7 @@ async function main() {
     vaultParams.mooName,
     vaultParams.mooSymbol,
     vaultParams.delay,
-    {gasPrice: 800000000 * 5}
+    {gasPrice: 800000000 * 10}
   ];
   const vault = await Vault.deploy(...vaultConstructorArguments);
   await vault.deployed();
@@ -88,7 +88,7 @@ async function main() {
     strategyParams.rewardToOutputRoute,
     strategyParams.outputToLp0Route,
     strategyParams.outputToLp1Route,
-    {gasPrice: 800000000 * 5,
+    {gasPrice: 800000000 * 10,
     gasLimit: 10000000}
   ];
   const strategy = await Strategy.deploy(...strategyConstructorArguments);

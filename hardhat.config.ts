@@ -19,6 +19,9 @@ const config: DeploymentConfig = {
     hardhat: {
       // accounts visible to hardhat network used by `hardhat node --fork` (yarn net <chainName>)
       accounts: hardhatNetworkAccounts,
+      forking: {
+        url: process.env.ARCH_NODE
+      }
     },
     bsc: {
       url: "https://bsc-dataseed2.defibit.io/",
@@ -39,7 +42,7 @@ const config: DeploymentConfig = {
       url: "https://polygon-rpc.com/",
       chainId: 137,
       accounts: accounts,
-      gasPrice: 800000000 * 5
+      gasPrice: 800000000 * 10
     },
     fantom: {
       url: "https://rpc.ftm.tools",
