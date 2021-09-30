@@ -33,9 +33,9 @@ const strategyParams = {
   keeper: beefyfinance.keeper,
   beefyFeeRecipient: beefyfinance.beefyFeeRecipient,
   outputToNativeRoute: [BANANA, WMATIC],
-  rewardToOutputRoute: [BANANA],
-  outputToLp0Route: [BANANA, CRYSTL],
-  outputToLp1Route: [BANANA],
+  rewardToOutputRoute: [BANANA, BANANA],
+  outputToLp0Route: [BANANA, WMATIC],
+  outputToLp1Route: [BANANA, CRYSTL],
   pendingRewardsFunctionName: "pendingBanana", // used for rewardsAvailable(), use correct function name from masterchef
 };
 
