@@ -39,6 +39,7 @@ const config: DeploymentConfig = {
       url: "https://polygon-rpc.com/",
       chainId: 137,
       accounts: accounts,
+      gasPrice: 800000000 * 5
     },
     fantom: {
       url: "https://rpc.ftm.tools",
