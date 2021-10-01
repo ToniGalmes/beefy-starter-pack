@@ -8,39 +8,40 @@ import { verifyContracts } from "../../utils/verifyContracts";
 // const registerSubsidy = require("../../utils/registerSubsidy");
 
 const {
-  USDC: { address: USDC },
+  CRYSTL: { address: CRYSTL },
   WMATIC: { address: WMATIC },
-  polyWISE: { address: polyWISE },
+  BANANA: { address: BANANA },
 } = addressBook.polygon.tokens;
-const { polywise, quickswap, beefyfinance } = addressBook.polygon.platforms;
+const { apeswap, beefyfinance } = addressBook.polygon.platforms;
 
-const shouldVerifyOnEtherscan = false;
+const shouldVerifyOnEtherscan = true;
 
-const want = web3.utils.toChecksumAddress("0x2F9209Ef6fA6C002bf6fC99124336e24F88B62D0");
+const want = web3.utils.toChecksumAddress("0xb8e54c9ea1616beebe11505a419dd8df1000e02a");
 
 const vaultParams = {
-  mooName: "Moo Polywise Quick USDC-WISE",
-  mooSymbol: "mooPolywiseQuickUSDC-WISE",
+  mooName: "Moo Apeswap WMATIC-CRYSTL",
+  mooSymbol: "mooApeswapWMATIC-CRYSTL",
   delay: 21600,
 };
 
 const strategyParams = {
   want,
-  poolId: 1,
-  chef: polywise.masterchef,
-  unirouter: quickswap.router,
-  strategist: "0x010dA5FF62B6e45f89FA7B2d8CEd5a8b5754eC1b", // some address
+  poolId: 7,
+  chef: apeswap.minichef,
+  unirouter: apeswap.router,
+  strategist: "0xBa4cB13Ed28C6511d9fa29A0570Fd2f2C9D08cE3", // some address
   keeper: beefyfinance.keeper,
   beefyFeeRecipient: beefyfinance.beefyFeeRecipient,
-  outputToNativeRoute: [polyWISE, WMATIC],
-  outputToLp0Route: [polyWISE, USDC],
-  outputToLp1Route: [polyWISE],
-  pendingRewardsFunctionName: "pendingWise", // used for rewardsAvailable(), use correct function name from masterchef
+  outputToNativeRoute: [BANANA, WMATIC],
+  rewardToOutputRoute: [CRYSTL, BANANA],
+  outputToLp0Route: [BANANA, WMATIC],
+  outputToLp1Route: [BANANA, WMATIC, CRYSTL],
+  pendingRewardsFunctionName: "pendingBanana", // used for rewardsAvailable(), use correct function name from masterchef
 };
 
 const contractNames = {
   vault: "BeefyVaultV6",
-  strategy: "StrategyCommonChefLP",
+  strategy: "StrategyMiniChefLP",
 };
 
 async function main() {
@@ -83,8 +84,9 @@ async function main() {
     strategyParams.strategist,
     strategyParams.beefyFeeRecipient,
     strategyParams.outputToNativeRoute,
+    strategyParams.rewardToOutputRoute,
     strategyParams.outputToLp0Route,
-    strategyParams.outputToLp1Route,
+    strategyParams.outputToLp1Route
   ];
   const strategy = await Strategy.deploy(...strategyConstructorArguments);
   await strategy.deployed();
@@ -98,12 +100,12 @@ async function main() {
 
   console.log();
   console.log("Running post deployment");
-
+  
   if (shouldVerifyOnEtherscan) {
     verifyContracts(vault, vaultConstructorArguments, strategy, strategyConstructorArguments);
   }
   await setPendingRewardsFunctionName(strategy, strategyParams.pendingRewardsFunctionName);
-  await setCorrectCallFee(strategy, hardhat.network.name);
+  //await setCorrectCallFee(strategy, hardhat.network.name);
   console.log();
 
   // if (hardhat.network.name === "bsc") {
