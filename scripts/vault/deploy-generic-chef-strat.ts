@@ -35,7 +35,7 @@ const strategyParams = {
   outputToNativeRoute: [BANANA, WMATIC],
   rewardToOutputRoute: [CRYSTL, BANANA],
   outputToLp0Route: [BANANA, WMATIC],
-  outputToLp1Route: [BANANA, CRYSTL],
+  outputToLp1Route: [BANANA, WMATIC, CRYSTL],
   pendingRewardsFunctionName: "pendingBanana", // used for rewardsAvailable(), use correct function name from masterchef
 };
 
